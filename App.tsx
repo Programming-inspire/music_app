@@ -53,6 +53,9 @@ export default function App() {
     if (!sound) return;
 
     const status = await sound.getStatusAsync();
+    // ensure the status is loaded before accessing isPlaying (narrows the union type)
+    if (!status.isLoaded) return;
+
     if (status.isPlaying) {
       await sound.pauseAsync();
       setIsPlaying(false);
